@@ -127,15 +127,7 @@ export default function Home() {
     <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-3xl mx-auto">
         <div className="flex flex-col items-center mb-8">
-          <img 
-            src="/gdg-logo.png" 
-            alt="Google Developer Groups On Campus" 
-            className="h-24 object-contain mb-6 opacity-[0.9]"
-            onError={(e) => {
-              // Fallback if logo is missing
-              (e.target as HTMLImageElement).style.display = 'none';
-            }}
-          />
+
           <h1 className="text-3xl font-bold text-gray-900 text-center">Samsun Üniversitesi Etkinlik Kayıt Formu</h1>
           <p className="mt-2 text-gray-600 text-center max-w-xl">
             Google Developer Groups On Campus Samsun Üniversitesi resmi etkinlik kayıt formuna hoş geldiniz. Takımınızı oluşturun ve etkinliğe katılın!
