@@ -133,14 +133,14 @@ export default function Home() {
             <svg width="104" height="68" viewBox="0 0 150 80" fill="none" xmlns="http://www.w3.org/2000/svg">
               {/* Left < chevron — apex at (22,40) */}
               {/* Red: upper arm */}
-              <rect x="22" y="31" width="52" height="18" rx="9" fill="#DB4437" transform="rotate(-40 22 40)" />
+              <rect x="22" y="31" width="52" height="18" rx="9" fill="#DB4437" transform="rotate(-28 22 40)" />
               {/* Blue: lower arm */}
-              <rect x="22" y="31" width="52" height="18" rx="9" fill="#4285F4" transform="rotate(40 22 40)" />
+              <rect x="22" y="31" width="52" height="18" rx="9" fill="#4285F4" transform="rotate(28 22 40)" />
               {/* Right > chevron — apex at (128,40) */}
               {/* Green: upper arm */}
-              <rect x="76" y="31" width="52" height="18" rx="9" fill="#0F9D58" transform="rotate(-40 128 40)" />
+              <rect x="76" y="31" width="52" height="18" rx="9" fill="#0F9D58" transform="rotate(-28 128 40)" />
               {/* Yellow: lower arm */}
-              <rect x="76" y="31" width="52" height="18" rx="9" fill="#F4B400" transform="rotate(40 128 40)" />
+              <rect x="76" y="31" width="52" height="18" rx="9" fill="#F4B400" transform="rotate(28 128 40)" />
             </svg>
             {/* Text block */}
             <div className="flex flex-col">
