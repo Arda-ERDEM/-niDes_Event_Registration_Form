@@ -130,7 +130,7 @@ export default function Home() {
           <img 
             src="/gdg-logo.png" 
             alt="Google Developer Groups On Campus" 
-            className="h-24 object-contain mb-6"
+            className="h-24 object-contain mb-6 opacity-[0.9]"
             onError={(e) => {
               // Fallback if logo is missing
               (e.target as HTMLImageElement).style.display = 'none';
