@@ -127,27 +127,46 @@ export default function Home() {
     <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-sans" style={{ background: "linear-gradient(135deg, #1a237e 0%, #1565C0 40%, #0097A7 75%, #004d40 100%)" }}>
       <div className="max-w-3xl mx-auto">
         <div className="flex flex-col items-center mb-8">
-          {/* GDG Logo — coded, no image background */}
-          <div className="flex items-center gap-4 mb-5">
-            {/* GDG colorful chevron icon */}
-            <svg width="104" height="68" viewBox="0 0 150 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* Left < chevron — apex at (22,40) */}
-              {/* Red: upper arm */}
-              <rect x="22" y="31" width="52" height="18" rx="9" fill="#DB4437" transform="rotate(-28 22 40)" />
-              {/* Blue: lower arm */}
-              <rect x="22" y="31" width="52" height="18" rx="9" fill="#4285F4" transform="rotate(28 22 40)" />
-              {/* Right > chevron — apex at (128,40) */}
-              {/* Green: upper arm */}
-              <rect x="76" y="31" width="52" height="18" rx="9" fill="#0F9D58" transform="rotate(-28 128 40)" />
-              {/* Yellow: lower arm */}
-              <rect x="76" y="31" width="52" height="18" rx="9" fill="#F4B400" transform="rotate(28 128 40)" />
-            </svg>
-            {/* Text block */}
-            <div className="flex flex-col">
-              <span className="text-white font-bold text-2xl leading-tight tracking-tight drop-shadow">Google Developer Groups</span>
-              <span className="text-white/85 text-base font-medium tracking-wide">On Campus · Samsun University</span>
+          {/* Header: GDG left, Teknopark right */}
+          <div className="flex items-center justify-center gap-6 mb-6 w-full">
+
+            {/* GDG Logo */}
+            <div className="flex items-center gap-3">
+              <svg width="80" height="54" viewBox="0 0 150 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="22" y="31" width="52" height="18" rx="9" fill="#DB4437" transform="rotate(-28 22 40)" />
+                <rect x="22" y="31" width="52" height="18" rx="9" fill="#4285F4" transform="rotate(28 22 40)" />
+                <rect x="76" y="31" width="52" height="18" rx="9" fill="#0F9D58" transform="rotate(-28 128 40)" />
+                <rect x="76" y="31" width="52" height="18" rx="9" fill="#F4B400" transform="rotate(28 128 40)" />
+              </svg>
+              <div className="flex flex-col">
+                <span className="text-white font-bold text-xl leading-tight tracking-tight drop-shadow">Google Developer Groups</span>
+                <span className="text-white/80 text-sm font-medium tracking-wide">On Campus · Samsun University</span>
+              </div>
             </div>
+
+            {/* Divider */}
+            <div className="h-14 w-px bg-white/30 flex-shrink-0" />
+
+            {/* Teknopark Samsun Logo — coded, no image background */}
+            <div className="flex items-center gap-3">
+              <svg width="48" height="54" viewBox="0 0 64 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                {/* 4-pointed compass star — gray body */}
+                <path d="M 32,2 L 39,25 L 62,32 L 39,39 L 32,62 L 25,39 L 2,32 L 25,25 Z" fill="#9e9e9e" />
+                {/* Red top petal overlay */}
+                <path d="M 32,2 L 39,25 L 32,32 L 25,25 Z" fill="#CC2222" />
+                {/* Slightly darker right/left/bottom for depth */}
+                <path d="M 62,32 L 39,25 L 32,32 L 39,39 Z" fill="#888" />
+                <path d="M 32,62 L 25,39 L 32,32 L 39,39 Z" fill="#aaa" />
+                <path d="M 2,32 L 25,39 L 32,32 L 25,25 Z" fill="#777" />
+              </svg>
+              <div className="flex flex-col">
+                <span className="text-white font-extrabold text-xl leading-tight tracking-widest drop-shadow">TEKNOPARK</span>
+                <span className="text-white/80 text-sm font-semibold tracking-[0.3em]">SAMSUN</span>
+              </div>
+            </div>
+
           </div>
+
           <h1 className="text-3xl font-bold text-white text-center drop-shadow">Etkinlik Kayıt Formu</h1>
           <p className="mt-2 text-white/90 text-center max-w-xl">
             Google Developer Groups On Campus Samsun Üniversitesi resmi etkinlik kayıt formuna hoş geldiniz. Takımınızı oluşturun ve etkinliğe katılın!
