@@ -5,6 +5,9 @@ import { logger } from "../lib/logger";
 
 const router: IRouter = Router();
 
+// In-memory store for taken team numbers (resets on server restart)
+const takenTeams = new Set<number>();
+
 function buildEmailHtml(data: {
   takimAdi: string;
   takimNumarasi: number;
@@ -15,6 +18,8 @@ function buildEmailHtml(data: {
     telefon: string;
     email: string;
     isKaptan: boolean;
+    universite: string;
+    bolum: string;
   }>;
 }): string {
   const kaptan = data.katilimcilar.find((k) => k.isKaptan);
@@ -26,6 +31,8 @@ function buildEmailHtml(data: {
       <td style="padding: 10px; border: 1px solid #ddd;">${p.isKaptan ? "👑 Kaptan" : "Katılımcı"}</td>
       <td style="padding: 10px; border: 1px solid #ddd;">${p.isimSoyisim}</td>
       <td style="padding: 10px; border: 1px solid #ddd;">${p.tcKimlik}</td>
+      <td style="padding: 10px; border: 1px solid #ddd;">${p.universite}</td>
+      <td style="padding: 10px; border: 1px solid #ddd;">${p.bolum}</td>
       <td style="padding: 10px; border: 1px solid #ddd;">${p.gelinenYer}</td>
       <td style="padding: 10px; border: 1px solid #ddd;">${p.telefon}</td>
       <td style="padding: 10px; border: 1px solid #ddd;">${p.email}</td>
@@ -42,7 +49,7 @@ function buildEmailHtml(data: {
   <title>Yeni Takım Kaydı</title>
 </head>
 <body style="font-family: 'Google Sans', Roboto, Arial, sans-serif; margin: 0; padding: 20px; background-color: #f5f5f5;">
-  <div style="max-width: 700px; margin: 0 auto; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+  <div style="max-width: 750px; margin: 0 auto; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
     
     <!-- Header -->
     <div style="background: linear-gradient(135deg, #4285F4 0%, #0F9D58 50%, #F4B400 75%, #DB4437 100%); padding: 30px; text-align: center;">
@@ -71,6 +78,8 @@ function buildEmailHtml(data: {
             <th style="padding: 10px; text-align: left; border: 1px solid #3367D6;">Rol</th>
             <th style="padding: 10px; text-align: left; border: 1px solid #3367D6;">İsim Soyisim</th>
             <th style="padding: 10px; text-align: left; border: 1px solid #3367D6;">TC Kimlik</th>
+            <th style="padding: 10px; text-align: left; border: 1px solid #3367D6;">Üniversite</th>
+            <th style="padding: 10px; text-align: left; border: 1px solid #3367D6;">Bölüm</th>
             <th style="padding: 10px; text-align: left; border: 1px solid #3367D6;">Geldiği Yer</th>
             <th style="padding: 10px; text-align: left; border: 1px solid #3367D6;">Telefon</th>
             <th style="padding: 10px; text-align: left; border: 1px solid #3367D6;">E-posta</th>
@@ -94,6 +103,10 @@ function buildEmailHtml(data: {
   `;
 }
 
+router.get("/taken-teams", (_req, res): void => {
+  res.json({ takenTeams: Array.from(takenTeams).sort((a, b) => a - b) });
+});
+
 router.post("/register", async (req, res): Promise<void> => {
   const parsed = SubmitRegistrationBody.safeParse(req.body);
   if (!parsed.success) {
@@ -103,6 +116,11 @@ router.post("/register", async (req, res): Promise<void> => {
   }
 
   const { takimAdi, takimNumarasi, katilimcilar } = parsed.data;
+
+  if (takenTeams.has(takimNumarasi)) {
+    res.status(409).json({ error: `Takım ${takimNumarasi} numarası zaten alınmış. Lütfen başka bir takım numarası seçin.` });
+    return;
+  }
 
   if (katilimcilar.length < 2 || katilimcilar.length > 4) {
     res.status(400).json({ error: "Takımda 2-4 katılımcı olmalıdır." });
@@ -118,6 +136,9 @@ router.post("/register", async (req, res): Promise<void> => {
   const emailUser = process.env.EMAIL_USER;
   const emailPass = process.env.EMAIL_PASS;
   const targetEmail = process.env.TARGET_EMAIL || "gdscsamsununiversitesi@gmail.com";
+
+  // Mark team as taken before sending email
+  takenTeams.add(takimNumarasi);
 
   if (!emailUser || !emailPass) {
     logger.warn("EMAIL_USER or EMAIL_PASS not set, email will not be sent");
@@ -151,6 +172,8 @@ router.post("/register", async (req, res): Promise<void> => {
     req.log.info({ takimAdi, takimNumarasi }, "Registration email sent");
     res.json({ success: true, message: "Kaydınız başarıyla alındı! E-posta gönderildi." });
   } catch (err) {
+    // Roll back team number if email fails
+    takenTeams.delete(takimNumarasi);
     req.log.error({ err }, "Failed to send registration email");
     res.status(500).json({ error: "E-posta gönderilirken bir hata oluştu. Lütfen tekrar deneyin." });
   }

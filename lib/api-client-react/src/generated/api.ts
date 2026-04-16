@@ -21,6 +21,7 @@ import type {
   HealthStatus,
   RegistrationRequest,
   RegistrationResponse,
+  TakenTeamsResponse,
 } from "./api.schemas";
 
 import { customFetch } from "../custom-fetch";
@@ -100,6 +101,82 @@ export function useHealthCheck<
   request?: SecondParameter<typeof customFetch>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getHealthCheckQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * Returns list of team numbers that are already registered
+ * @summary Get taken team numbers
+ */
+export const getGetTakenTeamsUrl = () => {
+  return `/api/taken-teams`;
+};
+
+export const getTakenTeams = async (
+  options?: RequestInit,
+): Promise<TakenTeamsResponse> => {
+  return customFetch<TakenTeamsResponse>(getGetTakenTeamsUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetTakenTeamsQueryKey = () => {
+  return [`/api/taken-teams`] as const;
+};
+
+export const getGetTakenTeamsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getTakenTeams>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getTakenTeams>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetTakenTeamsQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getTakenTeams>>> = ({
+    signal,
+  }) => getTakenTeams({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getTakenTeams>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetTakenTeamsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getTakenTeams>>
+>;
+export type GetTakenTeamsQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get taken team numbers
+ */
+
+export function useGetTakenTeams<
+  TData = Awaited<ReturnType<typeof getTakenTeams>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getTakenTeams>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetTakenTeamsQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;

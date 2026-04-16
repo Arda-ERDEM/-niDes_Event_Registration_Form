@@ -19,4 +19,8 @@ export interface Participant {
   email: string;
   /** Whether this participant is the team captain */
   isKaptan: boolean;
+  /** University name */
+  universite: string;
+  /** Department/faculty */
+  bolum: string;
 }

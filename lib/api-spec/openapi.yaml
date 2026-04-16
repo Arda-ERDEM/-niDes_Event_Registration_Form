@@ -26,6 +26,19 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /taken-teams:
+    get:
+      operationId: getTakenTeams
+      tags: [registration]
+      summary: Get taken team numbers
+      description: Returns list of team numbers that are already registered
+      responses:
+        "200":
+          description: List of taken team numbers
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TakenTeamsResponse"
   /register:
     post:
       operationId: submitRegistration
@@ -51,6 +64,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+        "409":
+          description: Team number already taken
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
         "500":
           description: Server error
           content:
@@ -66,6 +85,16 @@ components:
           type: string
       required:
         - status
+    TakenTeamsResponse:
+      type: object
+      properties:
+        takenTeams:
+          type: array
+          items:
+            type: integer
+          description: List of team numbers already registered
+      required:
+        - takenTeams
     Participant:
       type: object
       properties:
@@ -87,6 +116,12 @@ components:
         isKaptan:
           type: boolean
           description: Whether this participant is the team captain
+        universite:
+          type: string
+          description: University name
+        bolum:
+          type: string
+          description: Department/faculty
       required:
         - tcKimlik
         - isimSoyisim
@@ -94,6 +129,8 @@ components:
         - telefon
         - email
         - isKaptan
+        - universite
+        - bolum
     RegistrationRequest:
       type: object
       properties:

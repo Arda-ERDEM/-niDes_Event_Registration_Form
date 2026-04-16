@@ -9,6 +9,11 @@ export interface HealthStatus {
   status: string;
 }
 
+export interface TakenTeamsResponse {
+  /** List of team numbers already registered */
+  takenTeams: number[];
+}
+
 export interface Participant {
   /** TC Kimlik No (11 digits) */
   tcKimlik: string;
@@ -22,6 +27,10 @@ export interface Participant {
   email: string;
   /** Whether this participant is the team captain */
   isKaptan: boolean;
+  /** University name */
+  universite: string;
+  /** Department/faculty */
+  bolum: string;
 }
 
 export interface RegistrationRequest {

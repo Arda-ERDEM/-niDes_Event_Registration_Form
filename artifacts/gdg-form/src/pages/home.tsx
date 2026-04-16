@@ -3,7 +3,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Plus, Trash2, CheckCircle2, AlertCircle } from "lucide-react";
-import { useSubmitRegistration } from "@workspace/api-client-react";
+import { useSubmitRegistration, useGetTakenTeams } from "@workspace/api-client-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,13 +17,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
@@ -34,6 +27,8 @@ const participantSchema = z.object({
   telefon: z.string().min(10, "Geçerli bir telefon numarası giriniz"),
   email: z.string().email("Geçerli bir e-posta adresi giriniz"),
   isKaptan: z.boolean().default(false),
+  universite: z.string().min(2, "Üniversite adı zorunludur"),
+  bolum: z.string().min(2, "Bölüm adı zorunludur"),
 });
 
 const formSchema = z.object({
@@ -55,13 +50,16 @@ export default function Home() {
   
   const submitRegistration = useSubmitRegistration();
 
+  const { data: takenTeamsData } = useGetTakenTeams({ query: { refetchInterval: 15000 } });
+  const takenTeams = takenTeamsData?.takenTeams ?? [];
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       takimAdi: "",
       katilimcilar: [
-        { tcKimlik: "", isimSoyisim: "", gelinenYer: "", telefon: "", email: "", isKaptan: true },
-        { tcKimlik: "", isimSoyisim: "", gelinenYer: "", telefon: "", email: "", isKaptan: false },
+        { tcKimlik: "", isimSoyisim: "", gelinenYer: "", telefon: "", email: "", isKaptan: true, universite: "", bolum: "" },
+        { tcKimlik: "", isimSoyisim: "", gelinenYer: "", telefon: "", email: "", isKaptan: false, universite: "", bolum: "" },
       ],
     },
   });
@@ -192,45 +190,73 @@ export default function Home() {
                   </div>
                 )}
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FormField
-                    control={form.control}
-                    name="takimAdi"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-semibold">Takım Adı</FormLabel>
-                        <FormControl>
-                          <Input data-testid="input-team-name" placeholder="Örn: Geleceğin Yazılımcıları" {...field} className="h-12 bg-white" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="takimNumarasi"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-semibold">Takım Numarası (1-15)</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value?.toString()}>
-                          <FormControl>
-                            <SelectTrigger data-testid="select-team-number" className="h-12 bg-white">
-                              <SelectValue placeholder="Bir takım numarası seçin" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {Array.from({ length: 15 }, (_, i) => i + 1).map((num) => (
-                              <SelectItem key={num} value={num.toString()}>
-                                Takım {num}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                <FormField
+                  control={form.control}
+                  name="takimAdi"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-gray-700 font-semibold">Takım Adı</FormLabel>
+                      <FormControl>
+                        <Input data-testid="input-team-name" placeholder="Örn: Geleceğin Yazılımcıları" {...field} className="h-12 bg-white" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="takimNumarasi"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-gray-700 font-semibold">Takım Numarası (1-15)</FormLabel>
+                      <FormDescription className="text-gray-500 text-sm">
+                        Takım numaranızı seçin.{" "}
+                        <span className="inline-flex items-center gap-1">
+                          <span className="inline-block w-3 h-3 rounded-full bg-green-500"></span> Müsait
+                        </span>{" "}
+                        <span className="inline-flex items-center gap-1 ml-2">
+                          <span className="inline-block w-3 h-3 rounded-full bg-red-400"></span> Dolu
+                        </span>
+                      </FormDescription>
+                      <div className="grid grid-cols-5 gap-2 pt-1" data-testid="team-number-grid">
+                        {Array.from({ length: 15 }, (_, i) => i + 1).map((num) => {
+                          const isTaken = takenTeams.includes(num);
+                          const isSelected = field.value === num;
+                          return (
+                            <button
+                              key={num}
+                              type="button"
+                              disabled={isTaken}
+                              data-testid={`team-number-${num}`}
+                              onClick={() => !isTaken && field.onChange(num)}
+                              className={[
+                                "relative flex flex-col items-center justify-center rounded-xl border-2 py-3 px-2 transition-all font-semibold text-sm select-none",
+                                isTaken
+                                  ? "border-red-200 bg-red-50 text-red-300 cursor-not-allowed"
+                                  : isSelected
+                                  ? "border-primary bg-primary text-white shadow-md scale-105"
+                                  : "border-gray-200 bg-white text-gray-700 hover:border-primary hover:bg-primary/5 cursor-pointer",
+                              ].join(" ")}
+                            >
+                              <span className="text-lg font-bold leading-none">{num}</span>
+                              <span className="text-[10px] mt-1 font-medium opacity-80">
+                                {isTaken ? "Dolu" : isSelected ? "Seçildi" : "Müsait"}
+                              </span>
+                              {isTaken && (
+                                <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-red-400"></span>
+                              )}
+                              {isSelected && !isTaken && (
+                                <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-white"></span>
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                 <div className="pt-6">
                   <div className="flex items-center justify-between mb-4">
@@ -243,7 +269,7 @@ export default function Home() {
                         type="button"
                         variant="outline"
                         data-testid="button-add-participant"
-                        onClick={() => append({ tcKimlik: "", isimSoyisim: "", gelinenYer: "", telefon: "", email: "", isKaptan: false })}
+                        onClick={() => append({ tcKimlik: "", isimSoyisim: "", gelinenYer: "", telefon: "", email: "", isKaptan: false, universite: "", bolum: "" })}
                         className="flex items-center gap-2 border-primary text-primary hover:bg-primary/10"
                       >
                         <Plus className="h-4 w-4" />
@@ -343,6 +369,34 @@ export default function Home() {
                                 <FormLabel>E-posta Adresi</FormLabel>
                                 <FormControl>
                                   <Input data-testid={`input-email-${index}`} placeholder="ornek@ogrenci.samsun.edu.tr" type="email" {...field} className="bg-white" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+
+                          <FormField
+                            control={form.control}
+                            name={`katilimcilar.${index}.universite`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Üniversite</FormLabel>
+                                <FormControl>
+                                  <Input data-testid={`input-universite-${index}`} placeholder="Samsun Üniversitesi" {...field} className="bg-white" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+
+                          <FormField
+                            control={form.control}
+                            name={`katilimcilar.${index}.bolum`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Bölüm</FormLabel>
+                                <FormControl>
+                                  <Input data-testid={`input-bolum-${index}`} placeholder="Bilgisayar Mühendisliği" {...field} className="bg-white" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>

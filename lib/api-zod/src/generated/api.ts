@@ -16,6 +16,16 @@ export const HealthCheckResponse = zod.object({
 });
 
 /**
+ * Returns list of team numbers that are already registered
+ * @summary Get taken team numbers
+ */
+export const GetTakenTeamsResponse = zod.object({
+  takenTeams: zod
+    .array(zod.number())
+    .describe("List of team numbers already registered"),
+});
+
+/**
  * Submits a team registration form and sends email notification
  * @summary Submit team registration
  */
@@ -33,6 +43,8 @@ export const SubmitRegistrationBody = zod.object({
         isKaptan: zod
           .boolean()
           .describe("Whether this participant is the team captain"),
+        universite: zod.string().describe("University name"),
+        bolum: zod.string().describe("Department\/faculty"),
       }),
     )
     .describe("List of participants (2-4)"),

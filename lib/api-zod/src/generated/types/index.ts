@@ -11,3 +11,4 @@ export * from "./healthStatus";
 export * from "./participant";
 export * from "./registrationRequest";
 export * from "./registrationResponse";
+export * from "./takenTeamsResponse";
