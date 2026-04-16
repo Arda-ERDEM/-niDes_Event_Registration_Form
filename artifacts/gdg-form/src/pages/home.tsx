@@ -98,7 +98,7 @@ export default function Home() {
 
   if (isSuccess && successData) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
+      <div className="min-h-screen flex flex-col items-center justify-center p-4" style={{ background: "linear-gradient(135deg, #4285F4 0%, #0F9D58 30%, #F4B400 65%, #DB4437 100%)" }}>
         <Card className="w-full max-w-md border-t-8 border-t-green-500 shadow-lg text-center p-6">
           <div className="flex justify-center mb-6">
             <CheckCircle2 className="h-20 w-20 text-green-500" />
@@ -124,12 +124,17 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-sans" style={{ background: "linear-gradient(135deg, #4285F4 0%, #0F9D58 30%, #F4B400 65%, #DB4437 100%)" }}>
       <div className="max-w-3xl mx-auto">
         <div className="flex flex-col items-center mb-8">
-
-          <h1 className="text-3xl font-bold text-gray-900 text-center">Samsun Üniversitesi Etkinlik Kayıt Formu</h1>
-          <p className="mt-2 text-gray-600 text-center max-w-xl">
+          <img
+            src="/gdg-logo.png"
+            alt="Google Developer Groups On Campus"
+            className="h-24 object-contain mb-4"
+            style={{ mixBlendMode: "multiply" }}
+          />
+          <h1 className="text-3xl font-bold text-white text-center drop-shadow">Samsun Üniversitesi Etkinlik Kayıt Formu</h1>
+          <p className="mt-2 text-white/90 text-center max-w-xl">
             Google Developer Groups On Campus Samsun Üniversitesi resmi etkinlik kayıt formuna hoş geldiniz. Takımınızı oluşturun ve etkinliğe katılın!
           </p>
         </div>
