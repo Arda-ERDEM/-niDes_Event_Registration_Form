@@ -130,17 +130,17 @@ export default function Home() {
           {/* GDG Logo — coded, no image background */}
           <div className="flex items-center gap-4 mb-5">
             {/* GDG colorful chevron icon */}
-            <svg width="90" height="68" viewBox="0 0 130 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="104" height="68" viewBox="0 0 150 80" fill="none" xmlns="http://www.w3.org/2000/svg">
               {/* Left < chevron — apex at (22,40) */}
               {/* Red: upper arm */}
               <rect x="22" y="31" width="52" height="18" rx="9" fill="#DB4437" transform="rotate(-40 22 40)" />
               {/* Blue: lower arm */}
               <rect x="22" y="31" width="52" height="18" rx="9" fill="#4285F4" transform="rotate(40 22 40)" />
-              {/* Right > chevron — apex at (108,40) */}
+              {/* Right > chevron — apex at (128,40) */}
               {/* Green: upper arm */}
-              <rect x="56" y="31" width="52" height="18" rx="9" fill="#0F9D58" transform="rotate(-40 108 40)" />
+              <rect x="76" y="31" width="52" height="18" rx="9" fill="#0F9D58" transform="rotate(-40 128 40)" />
               {/* Yellow: lower arm */}
-              <rect x="56" y="31" width="52" height="18" rx="9" fill="#F4B400" transform="rotate(40 108 40)" />
+              <rect x="76" y="31" width="52" height="18" rx="9" fill="#F4B400" transform="rotate(40 128 40)" />
             </svg>
             {/* Text block */}
             <div className="flex flex-col">
