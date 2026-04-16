@@ -149,15 +149,15 @@ export default function Home() {
 
             {/* Teknopark Samsun Logo — coded, no image background */}
             <div className="flex items-center gap-3">
-              <svg width="48" height="54" viewBox="0 0 64 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                {/* 4-pointed compass star — gray body */}
-                <path d="M 32,2 L 39,25 L 62,32 L 39,39 L 32,62 L 25,39 L 2,32 L 25,25 Z" fill="#9e9e9e" />
-                {/* Red top petal overlay */}
-                <path d="M 32,2 L 39,25 L 32,32 L 25,25 Z" fill="#CC2222" />
-                {/* Slightly darker right/left/bottom for depth */}
-                <path d="M 62,32 L 39,25 L 32,32 L 39,39 Z" fill="#888" />
-                <path d="M 32,62 L 25,39 L 32,32 L 39,39 Z" fill="#aaa" />
-                <path d="M 2,32 L 25,39 L 32,32 L 25,25 Z" fill="#777" />
+              <svg width="52" height="52" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                {/* Top arm — red, stops before center leaving a gap */}
+                <path d="M 32,2 L 39,20 L 32,24 L 25,20 Z" fill="#CC2222" />
+                {/* Right arm — dark gray */}
+                <path d="M 62,32 L 44,25 L 40,32 L 44,39 Z" fill="#777" />
+                {/* Bottom arm — medium gray */}
+                <path d="M 32,62 L 39,44 L 32,40 L 25,44 Z" fill="#aaa" />
+                {/* Left arm — slightly lighter gray */}
+                <path d="M 2,32 L 20,25 L 24,32 L 20,39 Z" fill="#888" />
               </svg>
               <div className="flex flex-col">
                 <span className="text-white font-extrabold text-xl leading-tight tracking-widest drop-shadow">TEKNOPARK</span>
