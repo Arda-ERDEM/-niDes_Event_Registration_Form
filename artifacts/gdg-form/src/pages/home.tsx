@@ -127,13 +127,24 @@ export default function Home() {
     <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-sans" style={{ background: "linear-gradient(135deg, #4285F4 0%, #0F9D58 30%, #F4B400 65%, #DB4437 100%)" }}>
       <div className="max-w-3xl mx-auto">
         <div className="flex flex-col items-center mb-8">
-          <img
-            src="/gdg-logo.png"
-            alt="Google Developer Groups On Campus"
-            className="h-24 object-contain mb-4"
-            style={{ mixBlendMode: "multiply" }}
-          />
-          <h1 className="text-3xl font-bold text-white text-center drop-shadow">Samsun Üniversitesi Etkinlik Kayıt Formu</h1>
+          {/* GDG Logo — coded, no image background */}
+          <div className="flex items-center gap-4 mb-5">
+            {/* GDG colorful chevron icon */}
+            <svg width="72" height="52" viewBox="0 0 84 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {/* Left chevron < — blue top arm, red bottom arm */}
+              <polygon points="38,2 38,14 8,28 18,28" fill="#4285F4" />
+              <polygon points="8,28 18,28 38,50 38,38" fill="#DB4437" />
+              {/* Right chevron > — green top arm, yellow bottom arm */}
+              <polygon points="46,2 46,14 76,28 66,28" fill="#0F9D58" />
+              <polygon points="76,28 66,28 46,50 46,38" fill="#F4B400" />
+            </svg>
+            {/* Text block */}
+            <div className="flex flex-col">
+              <span className="text-white font-bold text-2xl leading-tight tracking-tight drop-shadow">Google Developer Groups</span>
+              <span className="text-white/85 text-base font-medium tracking-wide">On Campus · Samsun University</span>
+            </div>
+          </div>
+          <h1 className="text-3xl font-bold text-white text-center drop-shadow">Etkinlik Kayıt Formu</h1>
           <p className="mt-2 text-white/90 text-center max-w-xl">
             Google Developer Groups On Campus Samsun Üniversitesi resmi etkinlik kayıt formuna hoş geldiniz. Takımınızı oluşturun ve etkinliğe katılın!
           </p>
