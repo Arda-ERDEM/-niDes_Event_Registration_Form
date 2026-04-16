@@ -6,4 +6,8 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from "./errorResponse";
 export * from "./healthStatus";
+export * from "./participant";
+export * from "./registrationRequest";
+export * from "./registrationResponse";

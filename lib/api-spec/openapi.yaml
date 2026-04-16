@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: registration
+    description: Event registration operations
 paths:
   /healthz:
     get:
@@ -24,6 +26,37 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /register:
+    post:
+      operationId: submitRegistration
+      tags: [registration]
+      summary: Submit team registration
+      description: Submits a team registration form and sends email notification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegistrationRequest"
+      responses:
+        "200":
+          description: Registration submitted successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegistrationResponse"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +66,66 @@ components:
           type: string
       required:
         - status
-
+    Participant:
+      type: object
+      properties:
+        tcKimlik:
+          type: string
+          description: TC Kimlik No (11 digits)
+        isimSoyisim:
+          type: string
+          description: Full name
+        gelinenYer:
+          type: string
+          description: City/place of origin
+        telefon:
+          type: string
+          description: Phone number
+        email:
+          type: string
+          description: Email address
+        isKaptan:
+          type: boolean
+          description: Whether this participant is the team captain
+      required:
+        - tcKimlik
+        - isimSoyisim
+        - gelinenYer
+        - telefon
+        - email
+        - isKaptan
+    RegistrationRequest:
+      type: object
+      properties:
+        takimAdi:
+          type: string
+          description: Team name
+        takimNumarasi:
+          type: integer
+          description: Team number (1-15)
+        katilimcilar:
+          type: array
+          items:
+            $ref: "#/components/schemas/Participant"
+          description: List of participants (2-4)
+      required:
+        - takimAdi
+        - takimNumarasi
+        - katilimcilar
+    RegistrationResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+      required:
+        - success
+        - message
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error

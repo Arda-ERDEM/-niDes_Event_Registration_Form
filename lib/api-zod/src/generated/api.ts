@@ -14,3 +14,31 @@ import * as zod from "zod";
 export const HealthCheckResponse = zod.object({
   status: zod.string(),
 });
+
+/**
+ * Submits a team registration form and sends email notification
+ * @summary Submit team registration
+ */
+export const SubmitRegistrationBody = zod.object({
+  takimAdi: zod.string().describe("Team name"),
+  takimNumarasi: zod.number().describe("Team number (1-15)"),
+  katilimcilar: zod
+    .array(
+      zod.object({
+        tcKimlik: zod.string().describe("TC Kimlik No (11 digits)"),
+        isimSoyisim: zod.string().describe("Full name"),
+        gelinenYer: zod.string().describe("City\/place of origin"),
+        telefon: zod.string().describe("Phone number"),
+        email: zod.string().describe("Email address"),
+        isKaptan: zod
+          .boolean()
+          .describe("Whether this participant is the team captain"),
+      }),
+    )
+    .describe("List of participants (2-4)"),
+});
+
+export const SubmitRegistrationResponse = zod.object({
+  success: zod.boolean(),
+  message: zod.string(),
+});

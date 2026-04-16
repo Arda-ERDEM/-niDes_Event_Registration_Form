@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "GDG On Campus Samsun University - Etkinlik Kayıt"
+version = "1.0.0"
+id = "artifacts/gdg-form"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18724
+
+[services.development]
+run = "pnpm --filter @workspace/gdg-form run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/gdg-form", "run", "build" ]
+publicDir = "artifacts/gdg-form/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18724"
+BASE_PATH = "/"

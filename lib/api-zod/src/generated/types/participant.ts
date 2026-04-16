@@ -5,9 +5,6 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-export interface HealthStatus {
-  status: string;
-}
 
 export interface Participant {
   /** TC Kimlik No (11 digits) */
@@ -22,22 +19,4 @@ export interface Participant {
   email: string;
   /** Whether this participant is the team captain */
   isKaptan: boolean;
-}
-
-export interface RegistrationRequest {
-  /** Team name */
-  takimAdi: string;
-  /** Team number (1-15) */
-  takimNumarasi: number;
-  /** List of participants (2-4) */
-  katilimcilar: Participant[];
-}
-
-export interface RegistrationResponse {
-  success: boolean;
-  message: string;
-}
-
-export interface ErrorResponse {
-  error: string;
 }
