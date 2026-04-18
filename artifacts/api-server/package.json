@@ -23,6 +23,7 @@
     "xlsx": "^0.18.5"
   },
   "optionalDependencies": {
+    "@libsql/linux-x64-gnu": "^0.5.29",
     "@libsql/win32-x64-msvc": "^0.5.29"
   },
   "devDependencies": {

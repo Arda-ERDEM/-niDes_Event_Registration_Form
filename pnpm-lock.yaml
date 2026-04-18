@@ -240,6 +240,9 @@ importers:
         specifier: 3.1.0
         version: 3.1.0
     optionalDependencies:
+      '@libsql/linux-x64-gnu':
+        specifier: ^0.5.29
+        version: 0.5.29
       '@libsql/win32-x64-msvc':
         specifier: ^0.5.29
         version: 0.5.29
