@@ -3,6 +3,8 @@
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": ".",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "types": ["node"]
   },
   "include": ["src", "api"],
