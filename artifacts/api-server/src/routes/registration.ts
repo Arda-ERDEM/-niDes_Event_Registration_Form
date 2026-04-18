@@ -1,4 +1,4 @@
-import { Router, type IRouter, type Request } from "express";
+import { Router, type Request } from "express";
 import nodemailer from "nodemailer";
 import * as XLSX from "xlsx";
 import fs from "node:fs";
@@ -9,7 +9,7 @@ import { createClient, type Client } from "@libsql/client";
 import { SubmitRegistrationBody } from "@workspace/api-zod";
 import { logger } from "../lib/logger.js";
 
-const router: IRouter = Router();
+const router = Router();
 
 const SubmitRegistrationWithoutTeamBody = SubmitRegistrationBody.omit({
   takimNumarasi: true,
