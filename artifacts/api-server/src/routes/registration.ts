@@ -7,7 +7,7 @@ import { createHash, randomBytes, scryptSync, timingSafeEqual } from "node:crypt
 import { fileURLToPath } from "node:url";
 import { createClient, type Client } from "@libsql/client";
 import { SubmitRegistrationBody } from "@workspace/api-zod";
-import { logger } from "../lib/logger";
+import { logger } from "../lib/logger.js";
 
 const router: IRouter = Router();
 
